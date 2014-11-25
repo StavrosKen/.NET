@@ -19,3 +19,14 @@
     <add key="TW_APP" value="Bi7ElmLJRxLSPdGJDR2LRTLar" />
 
  </appSettings>
+ 
+ //----------------ALLOW ACCESS TO FOLDER--------------------------------------------------
+ 
+ 
+<location path="img">
+    <system.web>
+      <authorization>
+        <allow users="*"/>
+      </authorization>
+    </system.web>
+  </location>
