@@ -30,3 +30,11 @@
       </authorization>
     </system.web>
   </location>
+//-----------------DEFAULT DOCUMENT--------------------------------------------
+
+<defaultDocument>
+     <files>
+       <clear />
+       <add value="Default.aspx" />
+     </files>
+   </defaultDocument>
