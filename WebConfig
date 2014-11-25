@@ -1,0 +1,21 @@
+
+// -------------------------------CONNECTION STRING----------------------------
+<configuration>
+
+  <connectionStrings>
+    <add name="neuralab-clientssocialdb" connectionString="Data Source=jhu2xgiocd.database.windows.net;Initial Catalog=neuralab-clientssocialdb;Integrated Security=False;User ID=nrlbSQLsrvrAzureUser@jhu2xgiocd;Password=fdkm30r4E2i6jgGGfi219L12uh5ng87jgTnsu2AQZ8reD;Encrypt=True" providerName="System.Data.SqlClient" />
+  </connectionStrings>
+
+</configuration>
+
+
+
+
+//---------------------------------CONSTANTS--------------------------------------------
+
+ <appSettings>
+
+    <add key="FB_APP_ID" value="746327112097656" />
+    <add key="TW_APP" value="Bi7ElmLJRxLSPdGJDR2LRTLar" />
+
+ </appSettings>
