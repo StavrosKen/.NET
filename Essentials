@@ -1,0 +1,131 @@
+//-------------------------------HTTP HANDLER MUST HAVE------------------------------------
+//--------------------------------  
+<%@ WebHandler Language="C#" Class="getTWData" %>
+
+using System;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Net;
+using Newtonsoft.Json;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+
+
+
+public class getTWData : IHttpHandler {
+    
+    public void ProcessRequest (HttpContext context) {
+    //SOMETHING HERE
+     }
+ 
+    public bool IsReusable {
+        get {
+            return false;
+        }
+    }
+
+}
+ 
+ //--------------------------------  
+ 
+ 
+ 
+ 
+ 
+ 
+//--------------------------------GET RESPONSE FROM HTTP PING-----------------------------------------------   
+//--------------------------------  
+
+response = new WebClient().DownloadString(FBRequest);
+
+//--------------------------------  
+
+
+
+
+//--------------------------------REQUEST QUERY STRING--------------------------------------------------
+//--------------------------------  
+
+string clientName = context.Request.QueryString["cl"] ?? "";
+
+//-------------------------------- 
+
+
+//--------------------------------DESERIALIZE JSON--------------------------------------------------
+//-------------------------------- 
+
+dynamic stuff = JsonConvert.DeserializeObject(response);
+            response = stuff[metric];
+            
+//-------------------------------- 
+
+
+
+
+
+//--------------------------------SAVE TO DB--------------------------------------------------
+//-------------------------------- 
+
+ SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["neuralab-clientssocialdb"].ToString());
+        SqlCommand cmd = new SqlCommand("SaveMetric", conn);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Parameters.AddWithValue("@ID", ID);
+        cmd.Parameters.AddWithValue("@Value", response);
+
+        conn.Open();
+        cmd.ExecuteNonQuery();
+        conn.Close();
+        
+//-------------------------------- 
+
+
+
+
+
+
+//-------------------------------READ FROM SQL STORED PROCEDURE-----------------------------------------
+//--------------------------------  
+
+SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["neuralab-clientssocialdb"].ToString());
+        SqlCommand cmd = new SqlCommand("GetTWMetricValue", conn);
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Parameters.AddWithValue("@name", clientName);
+        cmd.Parameters.AddWithValue("@screenName", screenName);
+        cmd.Parameters.AddWithValue("@metric", metric);
+        conn.Open();
+
+         
+        SqlDataReader reader = cmd.ExecuteReader();         
+
+        while (reader.Read())
+        {
+            result+=reader["Metric_Value"];
+        }
+
+
+        conn.Close();
+//--------------------------------  
+
+
+
+
+ //----------------------WRITE RESULTS-----------------------------------------------------------------
+ //--------------------------------  
+ 
+  context.Response.ContentType = "text/plain";
+        context.Response.Write(result);
+        
+//--------------------------------          
+        
+        
+
+        
+        
+        
+        
+        
+        
+        
